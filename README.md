@@ -9,6 +9,11 @@ The extension clones a chosen tag or branch of EtherLab EtherCAT master from
 
 In addition, the `/dev/EtherCAT<idx>` device is exposed to the container via `--device` and the EtherLab config`/etc/sysconfig/ethercat` is bind-mounted (read-only) into the container automatically.
 
+**Missing features:**
+- Multiple EtherCAT devices (multi-master setup);
+- EtherLab repos URL as an argument;
+- Master launch at startup, i.e., run `sudo /etc/init.d/ethercat start` in host.
+
 ## Prerequisites: kernel module on the host
 
 Because this extension builds EtherLab with `--disable-kernel`, **no kernel module is compiled inside the container**. The `ec_master` kernel module must be built and loaded on the **host** machine before starting the container. The userspace library communicates with the master through the exposed `/dev/EtherCAT*` device.
