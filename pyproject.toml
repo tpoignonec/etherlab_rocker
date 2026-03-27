@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "etherlab_rocker"
+version = "0.1.0"
+authors = [
+    { name = "Contributors" },
+]
+description = "A rocker extension to install EtherCAT Master IgH (EtherLab) inside a Docker image."
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "Apache 2.0" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "empy",
+    "rocker>=0.2.13",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/tpoignonec/etherlab_rocker"
+
+[project.entry-points."rocker.extensions"]
+etherlab = "etherlab_rocker.etherlab_extension:EtherLab"
+
+[tool.setuptools]
+packages = ["etherlab_rocker"]
+package-dir = {"" = "src"}
+package-data = {"etherlab_rocker" = ["templates/*.em"]}
+zip-safe = false
