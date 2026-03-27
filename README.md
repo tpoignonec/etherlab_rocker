@@ -1,5 +1,8 @@
 # etherlab_rocker
 
+[![Publish to PyPI](https://github.com/tpoignonec/etherlab_rocker/actions/workflows/publish.yaml/badge.svg)](https://github.com/tpoignonec/etherlab_rocker/actions/workflows/publish.yaml)
+[![PyPI version](https://img.shields.io/pypi/v/etherlab-rocker)](https://pypi.org/project/etherlab-rocker/)
+
 A rocker extension that installs the EtherCAT Master IgH (EtherLab) userspace library from source inside a Docker image and forwards the master device and configuration into the container.
 
 The extension clones a chosen tag or branch of EtherLab EtherCAT master from
