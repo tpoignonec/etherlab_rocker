@@ -15,11 +15,8 @@ import pkgutil
 from rocker.extensions import RockerExtension
 from rocker.em import empy_expand
 
-SUPPORTED_ETHERLAB_VERSIONS = [
-    'stable-1.5',
-    'none'
-]
-DEFAULT_ETHERLAB_VERSION = SUPPORTED_ETHERLAB_VERSIONS[0]
+NONE_VERSION = 'none'
+DEFAULT_ETHERLAB_VERSION = 'stable-1.5'
 DEFAULT_ETHERCAT_MASTER_IDX = 0
 
 def has_etherlab():
@@ -53,13 +50,13 @@ class EtherLab(RockerExtension):
                     "The container may not have access to EtherCAT hardware.")
 
     def get_snippet(self, cliargs):
-        if cliargs.get('etherlab_version') == 'none':
+        if cliargs.get('etherlab_version') == NONE_VERSION:
             return ''
         snippet = pkgutil.get_data(
             'etherlab_rocker',
             'templates/%s_snippet.Dockerfile.em' % self.get_name()
         ).decode('utf-8')
-        return empy_expand(snippet, {})
+        return empy_expand(snippet, {'etherlab_version': cliargs.get('etherlab_version', DEFAULT_ETHERLAB_VERSION)})
 
     def get_docker_args(self, cli_args):
         args = ''
@@ -84,15 +81,15 @@ class EtherLab(RockerExtension):
             '--etherlab-version',
             type=str,
             default=defaults.get('etherlab_version', DEFAULT_ETHERLAB_VERSION),
-            choices=SUPPORTED_ETHERLAB_VERSIONS,
-            help='Version of EtherCAT Master IgH (EtherLab) to install.'
-        )
+            help='Git tag or branch of the EtherLab repository to build '
+                 '(e.g. "stable-1.5", "master", "v1.5.2"). '
+                 'Use "none" to skip installation.')
         parser.add_argument(
             '--ethercat-master-idx',
             type=int,
             default=defaults.get(
                 'ethercat_master_idx', DEFAULT_ETHERCAT_MASTER_IDX),
-            help='Index of the EtherCAT master device "/dev/EtherCAT<idx>"'
+            help='Index of the EtherCAT device "/dev/EtherCAT<idx>"'
                  'to forward into the container. Set to -1 to disable '
                  'forwarding.'
                 )

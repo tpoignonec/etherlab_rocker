@@ -10,15 +10,15 @@ RUN apt-get update \
         build-essential \
         ca-certificates \
     && mkdir /ec_dev && cd /ec_dev \
-    && git clone https://gitlab.com/etherlab.org/ethercat.git \
+    && git clone --branch @(etherlab_version) \
+        --depth 1 https://gitlab.com/etherlab.org/ethercat.git \
     && cd ethercat \
-    && git checkout stable-1.5 \
     && autoupdate \
     && ./bootstrap \
     && ./configure --prefix=/usr/local/etherlab --disable-kernel \
     && make && make install \
     && rm -rf /var/lib/apt/lists/* \
-    && rm -rf /ec_dev
+    && rm -rf /ethercat
 
 ENV PATH="/usr/local/etherlab/bin:${PATH}"
 ENV LD_LIBRARY_PATH="/usr/local/etherlab/lib:${LD_LIBRARY_PATH}"

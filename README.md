@@ -2,7 +2,7 @@
 
 A rocker extension that installs the EtherCAT Master IgH (EtherLab) userspace library from source inside a Docker image and forwards the master device and configuration into the container.
 
-The extension clones EtherLab EtherCAT master from
+The extension clones a chosen tag or branch of EtherLab EtherCAT master from
 `https://gitlab.com/etherlab.org/ethercat.git`, builds it with
 `--disable-kernel` (userspace-only), and installs it under
 `/usr/local/etherlab`.
@@ -47,23 +47,28 @@ rocker --etherlab [--etherlab-version <version>] [--ethercat-master-idx <idx>] <
 
 | Argument | Default | Description |
 |---|---|---|
-| `--etherlab` | — | Enable the extension (required) |
-| `--etherlab-version` | `stable-1.5` | EtherLab branch to build from. Use `none` to skip installation (only forward devices). Supported values: `stable-1.5`, `none` |
+| `--etherlab` | — | Enable the extension (**required**) |
+| `--etherlab-version` | `stable-1.5` | Any git tag or branch of the EtherLab repository (e.g. `stable-1.5`, `1.6.1`, etc.). Use `none` to skip installation and only forward devices and config |
 | `--ethercat-master-idx` | `0` | Index of the `/dev/EtherCAT<idx>` device to forward into the container. Set to `-1` to disable device forwarding |
-
-`/etc/sysconfig/ethercat` is always bind-mounted read-only from the host.
 
 ### Examples
 
-**Basic — install EtherLab and open a shell:**
+**Basic — install EtherLab `stable-1.5` (default) and open a shell:**
 ```bash
 rocker --etherlab ubuntu:24.04 bash
 ```
 
+**Use a specific tag or branch:**
+```bash
+rocker --etherlab --etherlab-version stable-1.6 ubuntu:24.04 bash
+```
+
 **Explicit master device index:**
 ```bash
-rocker --etherlab --ethercat-master-idx 0 ubuntu:24.04 bash
+rocker --etherlab --ethercat-master-idx 1 ubuntu:24.04 bash
 ```
+
+Note that no value is the same as `0`.
 
 **Skip installation (use a pre-built image that already has EtherLab):**
 ```bash
