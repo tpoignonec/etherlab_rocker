@@ -2,18 +2,16 @@
 
 A rocker extension that installs the EtherCAT Master IgH (EtherLab) userspace library from source inside a Docker image and forwards the master device and configuration into the container.
 
-The extension clones the `stable-1.5` branch from
+The extension clones EtherLab EtherCAT master from
 `https://gitlab.com/etherlab.org/ethercat.git`, builds it with
 `--disable-kernel` (userspace-only), and installs it under
 `/usr/local/etherlab`.
 
+In addition, the `/dev/EtherCAT<idx>` device is exposed to the container via `--device` and the EtherLab config`/etc/sysconfig/ethercat` is bind-mounted (read-only) into the container automatically.
+
 ## Prerequisites: kernel module on the host
 
-Because this extension builds EtherLab with `--disable-kernel`, **no kernel module is compiled inside the container**. The `ec_master` kernel module must be built and loaded on the **host** machine before starting the container. The userspace library communicates with the master through the `/dev/EtherCAT*` device, which is exposed to the container via `--device`.
-
-Install and load the kernel module on the host (one-time setup).
-
-> **Note:** `/etc/sysconfig/ethercat` is bind-mounted read-only into the container automatically by this extension.
+Because this extension builds EtherLab with `--disable-kernel`, **no kernel module is compiled inside the container**. The `ec_master` kernel module must be built and loaded on the **host** machine before starting the container. The userspace library communicates with the master through the exposed `/dev/EtherCAT*` device.
 
 ## Installation
 
@@ -26,7 +24,7 @@ pip install etherlab-rocker
 ### From source (development)
 
 ```bash
-git clone https://github.com/ICube-Robotics/etherlab_rocker.git
+git clone https://github.com/tpoignonec/etherlab_rocker.git
 
 # Virtual environment
 sudo apt install python3-venv
