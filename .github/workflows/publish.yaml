@@ -3,6 +3,7 @@ name: Publish to PyPI
 on:
   release:
     types: [published]
+  workflow_dispatch:  # allows manual trigger and enables the badge on the default branch
 
 jobs:
   build:
